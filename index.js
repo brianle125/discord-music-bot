@@ -60,14 +60,19 @@ else {
     client.on("ready", async() => {
         let servers = await client.guilds.cache.size
         let servercount = await client.guilds.cache.reduce((a,b) => a+b.memberCount, 0)
-        client.user.setActivity('a robotic horse', { type: 'WATCHING' });
+        client.user.setActivity(`a robotic horse`, { type: 'WATCHING' });
+        const Guilds = client.guilds.cache.map(guild => guild.id);
+        console.log(Guilds);
     })
+
     client.on("interactionCreate", (interaction) => {
         async function handleCommand() {
             if (!interaction.isCommand()) return
 
             const slashcmd = client.slashcommands.get(interaction.commandName)
-            if (!slashcmd) interaction.reply("Not a valid slash command")
+            if (!slashcmd) {
+                interaction.reply("Not a valid slash command")
+            } 
 
             await interaction.deferReply()
             await slashcmd.run({ client, interaction })

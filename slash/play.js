@@ -5,10 +5,10 @@ const { QueryType } = require("discord-player")
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("play")
-		.setDescription("loads songs from youtube")
+		.setDescription("play stuff from youtube")
 		.addSubcommand((subcommand) =>
 			subcommand
-				.setName("song")
+				.setName("link")
 				.setDescription("Loads a single song from a url")
 				.addStringOption((option) => option.setName("url").setDescription("the song's url").setRequired(true))
 		)
@@ -27,14 +27,18 @@ module.exports = {
 				)
 		),
 	run: async ({ client, interaction }) => {
-		if (!interaction.member.voice.channel) return interaction.editReply("Get in a voice channel")
+		if (!interaction.member.voice.channel) {
+            return interaction.editReply("Get in a voice channel")
+        }
 
 		const queue = await client.player.createQueue(interaction.guild)
-		if (!queue.connection) await queue.connect(interaction.member.voice.channel)
+		if (!queue.connection) {
+            await queue.connect(interaction.member.voice.channel)
+        } 
 
 		let embed = new MessageEmbed()
 
-		if (interaction.options.getSubcommand() === "song") {
+		if (interaction.options.getSubcommand() === "link") {
             let url = interaction.options.getString("url")
             const result = await client.player.search(url, {
                 requestedBy: interaction.user,
@@ -46,7 +50,7 @@ module.exports = {
             const song = result.tracks[0]
             await queue.addTrack(song)
             embed
-                .setDescription(`**[${song.title}](${song.url})** has been added to the Queue`)
+                .setDescription(`Playing **[${song.title}](${song.url})** now!`)
                 .setThumbnail(song.thumbnail)
                 .setFooter({ text: `Duration: ${song.duration}`})
 
@@ -58,7 +62,7 @@ module.exports = {
             })
 
             if (result.tracks.length === 0)
-                return interaction.editReply("No results")
+                return interaction.editReply("No results, try playing something that exists")
             
             const playlist = result.playlist
             await queue.addTracks(result.tracks)
@@ -81,8 +85,11 @@ module.exports = {
                 .setDescription(`**[${song.title}](${song.url})** has been added to the Queue`)
                 .setThumbnail(song.thumbnail)
                 .setFooter({ text: `Duration: ${song.duration}`})
+                .setColor("GREEN")
 		}
-        if (!queue.playing) await queue.play()
+        if (!queue.playing) {
+            await queue.play()
+        } 
         await interaction.editReply({
             embeds: [embed]
         })

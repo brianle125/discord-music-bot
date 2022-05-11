@@ -16,7 +16,7 @@ module.exports = {
         const totalPages = Math.ceil(queue.tracks.length / 10) || 1
         const page = (interaction.options.getNumber("page") || 1) - 1
         if(page > totalPages) {
-            return await interaction.editReply(`Invalid page. There are only ${totalPages} pages.`)
+            return await interaction.editReply(`There are only ${totalPages} pages.`)
         }
 
         const queueString = queue.tracks.slice(page * 10, page * 10 + 10).map((song, i) => {

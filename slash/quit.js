@@ -11,6 +11,6 @@ module.exports = {
             return await interaction.editReply("No songs in the queue")
         }
         queue.destroy();
-        await interaction.editReply("Stopped.")
+        await interaction.editReply("Stopped playing.")
     }
 }
