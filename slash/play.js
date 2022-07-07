@@ -9,7 +9,7 @@ module.exports = {
 		.addSubcommand((subcommand) =>
 			subcommand
 				.setName("link")
-				.setDescription("Loads a single song from a url")
+				.setDescription("Play a single song from a url")
 				.addStringOption((option) => option.setName("url").setDescription("the song's url").setRequired(true))
 		)
 		.addSubcommand((subcommand) =>

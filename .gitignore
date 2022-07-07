@@ -1,3 +1,5 @@
 .env
 junk/
 commands/
+node_modules
+config.json

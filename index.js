@@ -1,12 +1,15 @@
 const Discord = require("discord.js")
+const { Client, Intents } = require("discord.js");
 const dotenv = require("dotenv")
 const { REST } = require("@discordjs/rest")
 const { Routes } = require("discord-api-types/v9")
 const fs = require("fs")
 const { Player } = require("discord-player")
 
+const config = require("./config.json");
+
 dotenv.config()
-const TOKEN = process.env.TOKEN
+const TOKEN = config.token;
 
 const LOAD_SLASH = process.argv[2] == "load"
 
@@ -16,7 +19,9 @@ const GUILD_ID = `${process.env.NS}`
 const client = new Discord.Client({
     intents: [
         "GUILDS",
-        "GUILD_VOICE_STATES"
+        "GUILD_VOICE_STATES",
+        Intents.FLAGS.GUILDS, 
+        Intents.FLAGS.GUILD_MESSAGES
     ]
 })
 
@@ -79,5 +84,12 @@ else {
         }
         handleCommand()
     })
+
+    client.on("messageCreate", (message) => {
+        if (message.content.includes("!gamble") || 
+        message.content.includes("!work") || message.content.includes("!check")) {
+          message.channel.send(process.env.PARTY_HARD);
+        } 
+    });
     client.login(TOKEN)
 }
