@@ -1,3 +1,6 @@
 # discord-music-bot
-A rudimentary bot that plays music from YouTube, and a few things for fun.
-Current stretch goal: Play things from Spotify/Soundcloud
+A rudimentary Discord bot that plays music from YouTube, and does a few other things for fun.
+Current stretch goals: 
+#Play things from Spotify/Soundcloud
+#Implement other commands for personal use
+
